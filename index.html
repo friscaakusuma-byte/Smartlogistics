@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMARTLOGIX 2035 - Interactive Strategic Blueprint</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        title: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            navy: '#0F172A', 
+                            slate: '#1E293B',
+                            blue: '#2563eb', 
+                            teal: '#0d9488', 
+                            green: '#22c55e', 
+                            orange: '#f97316', 
+                            lightBg: '#F8FAFC',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom scrollbar to keep layout clean */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Animated connection lines */
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -40;
+            }
+        }
+        .animated-connector {
+            stroke-dasharray: 8, 4;
+            animation: dash 3s linear infinite;
+        }
+        
+        /* Pulse for high-impact metrics */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(0.95); opacity: 0.5; }
+        }
+        .pulse-highlight {
+            animation: pulse-ring 2s infinite ease-in-out;
+        }
+
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                padding: 0 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-break {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 font-sans text-slate-800 dark:text-slate-200 antialiased transition-colors duration-300 min-h-screen flex flex-col">
+
+    <!-- Top Strategic Navigation Bar -->
+    <header class="bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 px-6 py-4 sticky top-0 z-40 shadow-sm no-print">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="bg-brand-navy dark:bg-brand-blue text-white p-2.5 rounded-lg">
+                    <i class="fa-solid fa-network-wired text-xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="bg-brand-blue/10 text-brand-blue text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded">
+                            RI-RPJPN Strategic System
+                        </span>
+                        <span class="text-xs text-slate-400 font-semibold">• ministerial asset</span>
+                    </div>
+                    <h1 class="text-xl font-bold font-title tracking-tight text-slate-900 dark:text-white">SMARTLOGIX 2035</h1>
+                </div>
+            </div>
+
+            <!-- View Modes & Controls -->
+            <div class="flex flex-wrap items-center gap-3">
+                <nav class="flex bg-slate-100 dark:bg-slate-900 p-1 rounded-lg border border-slate-200 dark:border-slate-800">
+                    <button onclick="switchTab('blueprint')" id="tab-btn-blueprint" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm">
+                        <i class="fa-solid fa-chart-line"></i> Strategic Blueprint
+                    </button>
+                    <button onclick="switchTab('simulator')" id="tab-btn-simulator" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition text-slate-500 hover:text-slate-900 dark:hover:text-white">
+                        <i class="fa-solid fa-sliders"></i> Impact Simulator
+                    </button>
+                    <button onclick="switchTab('docs')" id="tab-btn-docs" class="tab-btn flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md transition text-slate-500 hover:text-slate-900 dark:hover:text-white">
+                        <i class="fa-solid fa-file-invoice"></i> Policy Framework
+                    </button>
+                </nav>
+
+                <div class="h-6 w-px bg-slate-200 dark:bg-slate-800 hidden sm:block"></div>
+
+                <button onclick="toggleHighlightMode()" id="highlight-toggle-btn" class="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition">
+                    <i class="fa-solid fa-bullseye text-brand-orange"></i> Toggle Targets Highlight
+                </button>
+
+                <button onclick="window.print()" class="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-brand-blue hover:bg-blue-700 rounded-lg shadow-sm transition">
+                    <i class="fa-solid fa-file-pdf"></i> Export Strategy Blueprint
+                </button>
+
+                <button onclick="toggleDarkMode()" class="p-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white rounded-lg transition" title="Toggle Theme">
+                    <i class="fa-solid fa-circle-half-stroke text-lg"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Strategic Board Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 lg:p-8 flex flex-col justify-between">
+
+        <!-- Tab 1: Strategic Diagram Dashboard -->
+        <div id="tab-blueprint" class="space-y-8 animate-fadeIn duration-500">
+            <!-- Strategic Header Block -->
+            <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-850 p-6 rounded-2xl shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white font-title tracking-tight">SMARTLOGIX 2035</h2>
+                    <h3 class="text-sm font-semibold tracking-wide text-brand-blue dark:text-blue-400 mt-1 uppercase font-title">
+                        Integrated Smart Logistics Transformation for Achieving Indonesia's 8% Economic Growth
+                    </h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 max-w-4xl leading-relaxed">
+                        Building a digital, integrated, green, and inclusive logistics ecosystem to reduce logistics costs, strengthen national competitiveness, and support Indonesia's 8% economic growth target.
+                    </p>
+                </div>
+                <div class="text-right flex flex-col items-end shrink-0">
+                    <span class="text-slate-400 dark:text-slate-500 font-mono text-xs font-bold">DOC ID: ID-SLX2035-STG</span>
+                    <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1.5 bg-slate-100 dark:bg-slate-900 px-3 py-1 rounded-md border border-slate-200 dark:border-slate-800 uppercase tracking-wider">
+                        World Bank Policy Alignment
+                    </span>
+                </div>
+            </div>
+
+            <!-- Core Infographic Layout: Central Hexagon & 4 Pillars with Animated Connectors -->
+            <div class="grid grid-cols-12 gap-6 items-center relative">
+                
+                <!-- Pillar 1: Smart Port Ecosystem (Track A) -->
+                <div onclick="openPillarDetail('smart-port')" class="col-span-12 lg:col-span-4 bg-white dark:bg-slate-950 border-l-8 border-brand-blue rounded-r-2xl p-5 shadow-sm hover:shadow-xl transition duration-300 cursor-pointer relative group group">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2.5 bg-blue-50 dark:bg-blue-950/40 rounded-xl text-brand-blue">
+                                <i class="fa-solid fa-ship text-lg"></i>
+                            </div>
+                            <h4 class="font-extrabold text-sm tracking-wide text-slate-900 dark:text-white uppercase font-title">1. Smart Port Ecosystem</h4>
+                        </div>
+                        <span class="text-[10px] font-bold text-brand-blue bg-blue-50 dark:bg-blue-950/40 px-2.5 py-1 rounded uppercase font-mono">Pillar I</span>
+                    </div>
+                    <ul class="text-xs text-slate-600 dark:text-slate-400 space-y-1.5 mb-4 list-disc pl-4">
+                        <li>Port Community System (PCS) & Digital Twin</li>
+                        <li>IoT Cargo Tracking & AI Traffic Control</li>
+                        <li>RFID, GPS Monitoring & E-Waybill</li>
+                        <li>Green Port Certifications & Electrification</li>
+                    </ul>
+                    <div class="border-t border-slate-100 dark:border-slate-800 pt-3 flex justify-between items-center bg-blue-50/40 dark:bg-blue-950/10 p-3 rounded-lg">
+                        <span class="text-[10px] font-bold text-brand-blue uppercase">KPI Outcomes 2035:</span>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="kpi-target text-[10px] font-bold text-brand-blue bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-blue-200 dark:border-blue-800 transition-all font-mono">Dwelling ≤ 1.5 Days</span>
+                            <span class="kpi-target text-[10px] font-bold text-brand-blue bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-blue-200 dark:border-blue-800 transition-all font-mono">LPI Top 40</span>
+                        </div>
+                    </div>
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 text-brand-blue transition duration-350">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </div>
+                </div>
+
+                <!-- Central Hub Connecting System Graphic -->
+                <div class="col-span-12 lg:col-span-4 flex flex-col items-center justify-center relative min-h-[220px] lg:min-h-[320px]">
+                    <!-- Interactive Visual Map Overlay -->
+                    <svg class="absolute inset-0 w-full h-full hidden lg:block pointer-events-none" viewBox="0 0 200 200">
+                        <!-- Top left (Pillar 1) to center -->
+                        <line x1="20" y1="40" x2="80" y2="85" stroke="#2563eb" stroke-width="2" class="animated-connector" />
+                        <polygon points="80,85 75,78 72,83" fill="#2563eb" />
+                        <!-- Bottom left (Pillar 2) to center -->
+                        <line x1="20" y1="160" x2="80" y2="115" stroke="#0d9488" stroke-width="2" class="animated-connector" />
+                        <!-- Top right (Pillar 3) to center -->
+                        <line x1="180" y1="40" x2="120" y2="85" stroke="#22c55e" stroke-width="2" class="animated-connector" />
+                        <!-- Bottom right (Pillar 4) to center -->
+                        <line x1="180" y1="160" x2="120" y2="115" stroke="#f97316" stroke-width="2" class="animated-connector" />
+                    </svg>
+
+                    <!-- Hexagon Centerpiece Strategic Goal Box -->
+                    <div class="relative w-52 h-52 flex items-center justify-center drop-shadow-2xl z-20 transition transform hover:scale-105 duration-300">
+                        <!-- Custom Dual-Colored Hexagon with SVG paths -->
+                        <svg class="absolute inset-0 w-full h-full text-slate-900 dark:text-slate-950 drop-shadow-md" viewBox="0 0 100 100" fill="currentColor">
+                            <polygon points="50,2 95,27 95,77 50,102 5,77 5,27" />
+                            <polygon points="50,6 91,29 91,74 50,97 9,74 9,29" fill="#1e293b" />
+                        </svg>
+                        
+                        <div class="absolute text-center px-4 flex flex-col items-center justify-center pointer-events-none">
+                            <span class="text-[9px] font-bold text-emerald-400 tracking-widest uppercase font-title">Goal Target</span>
+                            <h3 class="text-md font-extrabold text-white font-title tracking-tight leading-none mt-1">SMARTLOGIX</h3>
+                            <h3 class="text-2xl font-black text-emerald-400 font-title tracking-tight leading-none">2035</h3>
+                            <div class="w-10 h-0.5 bg-slate-500/50 my-2"></div>
+                            <p class="text-[8.5px] text-slate-300 font-medium leading-tight uppercase tracking-wider">
+                                Indonesia's 8% Economic Engine
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pillar 3: Human Capital Program (Track B) -->
+                <div onclick="openPillarDetail('human-capital')" class="col-span-12 lg:col-span-4 bg-white dark:bg-slate-950 border-r-8 border-brand-green rounded-l-2xl p-5 shadow-sm hover:shadow-xl transition duration-300 cursor-pointer relative group text-right">
+                    <div class="flex items-center justify-between mb-3 flex-row-reverse">
+                        <div class="flex items-center gap-3 flex-row-reverse">
+                            <div class="p-2.5 bg-green-50 dark:bg-green-950/40 rounded-xl text-brand-green">
+                                <i class="fa-solid fa-user-gear text-lg"></i>
+                            </div>
+                            <h4 class="font-extrabold text-sm tracking-wide text-slate-900 dark:text-white uppercase font-title">3. Human Capital</h4>
+                        </div>
+                        <span class="text-[10px] font-bold text-brand-green bg-green-50 dark:bg-green-950/40 px-2.5 py-1 rounded uppercase font-mono">Pillar III</span>
+                    </div>
+                    <ul class="text-xs text-slate-600 dark:text-slate-400 space-y-1.5 mb-4 list-disc pr-4 dir-rtl text-right">
+                        <li>Logistics Certification Hubs</li>
+                        <li>Competency-Based Systems & Training</li>
+                        <li>Digital, AI & Data Analytics Literacy</li>
+                        <li>Formalization of MSME Operators</li>
+                    </ul>
+                    <div class="border-t border-slate-100 dark:border-slate-800 pt-3 flex justify-between items-center bg-green-50/40 dark:bg-green-950/10 p-3 rounded-lg flex-row-reverse">
+                        <span class="text-[10px] font-bold text-brand-green uppercase">KPI Outcomes 2035:</span>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="kpi-target text-[10px] font-bold text-brand-green bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-green-200 dark:border-green-800 transition-all font-mono">300k Certified</span>
+                            <span class="kpi-target text-[10px] font-bold text-brand-green bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-green-200 dark:border-green-800 transition-all font-mono">50% Formalized</span>
+                        </div>
+                    </div>
+                    <div class="absolute left-4 top-4 opacity-0 group-hover:opacity-100 text-brand-green transition duration-350">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </div>
+                </div>
+
+                <!-- Pillar 2: Multi-Modal Logistics Parks (MMLP) (Track A) -->
+                <div onclick="openPillarDetail('mmlp')" class="col-span-12 lg:col-span-4 bg-white dark:bg-slate-950 border-l-8 border-brand-teal rounded-r-2xl p-5 shadow-sm hover:shadow-xl transition duration-300 cursor-pointer mt-4 relative group">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2.5 bg-teal-50 dark:bg-teal-950/40 rounded-xl text-brand-teal">
+                                <i class="fa-solid fa-truck-ramp-box text-lg"></i>
+                            </div>
+                            <h4 class="font-extrabold text-sm tracking-wide text-slate-900 dark:text-white uppercase font-title">2. Multi-Modal Parks</h4>
+                        </div>
+                        <span class="text-[10px] font-bold text-brand-teal bg-teal-50 dark:bg-teal-950/40 px-2.5 py-1 rounded uppercase font-mono">Pillar II</span>
+                    </div>
+                    <ul class="text-xs text-slate-600 dark:text-slate-400 space-y-1.5 mb-4 list-disc pl-4">
+                        <li>Rail, Freight, Airport & Dry Port Integrations</li>
+                        <li>Cargo Consolidation & Cold Chain Hubs</li>
+                        <li>Cross-Docking Facilities & distribution</li>
+                        <li>Special Industrial Estate Joint Networks</li>
+                    </ul>
+                    <div class="border-t border-slate-100 dark:border-slate-800 pt-3 flex justify-between items-center bg-teal-50/40 dark:bg-teal-950/10 p-3 rounded-lg">
+                        <span class="text-[10px] font-bold text-brand-teal uppercase">KPI Outcomes 2035:</span>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="kpi-target text-[10px] font-bold text-brand-teal bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-teal-200 dark:border-teal-800 transition-all font-mono">10+ MMLP Hubs</span>
+                            <span class="kpi-target text-[10px] font-bold text-brand-teal bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-teal-200 dark:border-teal-800 transition-all font-mono">30% Faster Dist.</span>
+                        </div>
+                    </div>
+                    <div class="absolute right-4 top-4 opacity-0 group-hover:opacity-100 text-brand-teal transition duration-350">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </div>
+                </div>
+
+                <div class="col-span-12 lg:col-span-4 hidden lg:block">
+                    <!-- Column spacer keeping central alignment on large desktop monitors -->
+                </div>
+
+                <!-- Pillar 4: Investment Scheme (Track B) -->
+                <div onclick="openPillarDetail('investment')" class="col-span-12 lg:col-span-4 bg-white dark:bg-slate-950 border-r-8 border-brand-orange rounded-l-2xl p-5 shadow-sm hover:shadow-xl transition duration-300 cursor-pointer mt-4 relative group text-right">
+                    <div class="flex items-center justify-between mb-3 flex-row-reverse">
+                        <div class="flex items-center gap-3 flex-row-reverse">
+                            <div class="p-2.5 bg-orange-50 dark:bg-orange-950/40 rounded-xl text-brand-orange">
+                                <i class="fa-solid fa-circle-dollar-to-slot text-lg"></i>
+                            </div>
+                            <h4 class="font-extrabold text-sm tracking-wide text-slate-900 dark:text-white uppercase font-title">4. Investment Scheme</h4>
+                        </div>
+                        <span class="text-[10px] font-bold text-brand-orange bg-orange-50 dark:bg-orange-950/40 px-2.5 py-1 rounded uppercase font-mono">Pillar IV</span>
+                    </div>
+                    <ul class="text-xs text-slate-600 dark:text-slate-400 space-y-1.5 mb-4 list-disc pr-4 text-right">
+                        <li>PPP, Blended Finance & INA Sovereign Wealth</li>
+                        <li>One-Stop Gateways & National Pipelines</li>
+                        <li>Tax Holiday, Allowance & Incentive Systems</li>
+                        <li>Viability Gap Funding (VGF) Schemes</li>
+                    </ul>
+                    <div class="border-t border-slate-100 dark:border-slate-800 pt-3 flex justify-between items-center bg-orange-50/40 dark:bg-orange-950/10 p-3 rounded-lg flex-row-reverse">
+                        <span class="text-[10px] font-bold text-brand-orange uppercase">KPI Outcomes 2035:</span>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="kpi-target text-[10px] font-bold text-brand-orange bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-orange-200 dark:border-orange-800 transition-all font-mono">Logistics ≤ 8% GDP</span>
+                            <span class="kpi-target text-[10px] font-bold text-brand-orange bg-white dark:bg-slate-900 px-2 py-0.5 rounded border border-orange-200 dark:border-orange-800 transition-all font-mono">Private Cap Focus</span>
+                        </div>
+                    </div>
+                    <div class="absolute left-4 top-4 opacity-0 group-hover:opacity-100 text-brand-orange transition duration-350">
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Chronological Roadmap Timeline -->
+            <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-850 p-6 rounded-2xl shadow-sm">
+                <div class="flex items-center gap-2.5 mb-6">
+                    <i class="fa-solid fa-timeline text-brand-blue text-lg"></i>
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white font-title">
+                        Strategic Horizon & Execution Phases
+                    </h3>
+                </div>
+                
+                <div class="grid grid-cols-12 gap-6 relative">
+                    <!-- Connection pipeline path background -->
+                    <div class="absolute top-[28px] left-[12%] right-[12%] h-[3px] bg-slate-200 dark:bg-slate-800 hidden md:block z-0"></div>
+
+                    <!-- Phase 1 Card -->
+                    <div onclick="openPhaseDetail('phase-1')" class="col-span-12 md:col-span-4 relative z-10 group cursor-pointer bg-slate-50 dark:bg-slate-900/40 hover:bg-white dark:hover:bg-slate-900 p-5 rounded-xl border border-slate-100 dark:border-slate-800 hover:border-brand-blue dark:hover:border-brand-blue transition duration-300">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-full bg-blue-100 dark:bg-blue-950 text-brand-blue flex items-center justify-center font-bold text-sm font-mono shadow-inner group-hover:bg-brand-blue group-hover:text-white transition duration-300">
+                                01
+                            </div>
+                            <div>
+                                <span class="text-[9px] font-bold text-brand-blue tracking-wide uppercase block">Phase 1: 2026–2028</span>
+                                <h4 class="font-bold text-xs text-slate-900 dark:text-white uppercase font-title">Foundation & Policy Harmonization</h4>
+                            </div>
+                        </div>
+                        <ul class="text-[11px] text-slate-500 dark:text-slate-400 mt-4 space-y-1 list-disc pl-4">
+                            <li>National Customs Framework Alignment</li>
+                            <li>NLE Expansion & Integration to 10 Key Ports</li>
+                            <li>Inaugural MMLP Feasibility Study</li>
+                        </ul>
+                    </div>
+
+                    <!-- Phase 2 Card -->
+                    <div onclick="openPhaseDetail('phase-2')" class="col-span-12 md:col-span-4 relative z-10 group cursor-pointer bg-slate-50 dark:bg-slate-900/40 hover:bg-white dark:hover:bg-slate-900 p-5 rounded-xl border border-slate-100 dark:border-slate-800 hover:border-brand-teal dark:hover:border-brand-teal transition duration-300">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-full bg-teal-100 dark:bg-teal-950 text-brand-teal flex items-center justify-center font-bold text-sm font-mono shadow-inner group-hover:bg-brand-teal group-hover:text-white transition duration-300">
+                                02
+                            </div>
+                            <div>
+                                <span class="text-[9px] font-bold text-brand-teal tracking-wide uppercase block">Phase 2: 2029–2032</span>
+                                <h4 class="font-bold text-xs text-slate-900 dark:text-white uppercase font-title">National Scale & Integration</h4>
+                            </div>
+                        </div>
+                        <ul class="text-[11px] text-slate-500 dark:text-slate-400 mt-4 space-y-1 list-disc pl-4">
+                            <li>Nationwide Port Community System Deployment</li>
+                            <li>Development of Multi-Modal Logistics Parks</li>
+                            <li>Formal Logistics Academic Certification Rollout</li>
+                        </ul>
+                    </div>
+
+                    <!-- Phase 3 Card -->
+                    <div onclick="openPhaseDetail('phase-3')" class="col-span-12 md:col-span-4 relative z-10 group cursor-pointer bg-slate-50 dark:bg-slate-900/40 hover:bg-white dark:hover:bg-slate-900 p-5 rounded-xl border border-slate-100 dark:border-slate-800 hover:border-brand-orange dark:hover:border-brand-orange transition duration-300">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 rounded-full bg-orange-100 dark:bg-orange-950 text-brand-orange flex items-center justify-center font-bold text-sm font-mono shadow-inner group-hover:bg-brand-orange group-hover:text-white transition duration-300">
+                                03
+                            </div>
+                            <div>
+                                <span class="text-[9px] font-bold text-brand-orange tracking-wide uppercase block">Phase 3: 2033–2035</span>
+                                <h4 class="font-bold text-xs text-slate-900 dark:text-white uppercase font-title">AI & Smart Green Optimization</h4>
+                            </div>
+                        </div>
+                        <ul class="text-[11px] text-slate-500 dark:text-slate-400 mt-4 space-y-1 list-disc pl-4">
+                            <li>Autonomous Intelligent Cargo Network Models</li>
+                            <li>Unified National Twin Modeling Control</li>
+                            <li>Complete Transition to Net-Zero Class-1 Ports</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Multi-Dimensional Impacts Dashboard -->
+            <div class="grid grid-cols-12 gap-6">
+                <!-- Economic Box -->
+                <div class="col-span-12 md:col-span-4 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-850 p-5 rounded-2xl shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="p-2 bg-blue-100 dark:bg-blue-950 text-brand-blue rounded-lg">
+                            <i class="fa-solid fa-chart-line-up"></i>
+                        </div>
+                        <h4 class="font-extrabold text-sm tracking-wide text-slate-900 dark:text-white uppercase font-title">Economic Impact</h4>
+                    </div>
+                    <ul class="text-xs text-slate-600 dark:text-slate-400 space-y-2 list-none pl-1">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-caret-right text-brand-blue mt-0.5"></i>
+                            <span>National logistics costs reduced to <strong class="text-brand-blue">8% of total GDP</strong></span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-caret-right text-brand-blue mt-0.5"></i>
+                            <span>Stimulates deeper international foreign direct investment (FDI)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-caret-right text-brand-blue mt-0.5"></i>
+                            <span>Supports and enables the macro <strong class="text-brand-blue">8.0% annual GDP target</strong></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Social Box -->
+                <div class="col-span-12 md:col-span-4 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-850 p-5 rounded-2xl shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="p-2 bg-green-100 dark:bg-green-950 text-brand-green rounded-lg">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <h4 class="font-extrabold text-sm tracking-wide text-slate-900 dark:text-white uppercase font-title">Social & MSME Impact</h4>
+                    </div>
+                    <ul class="text-xs text-slate-600 dark:text-slate-400 space-y-2 list-none pl-1">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-caret-right text-brand-green mt-0.5"></i>
+                            <span>Develops over 300,000 highly trained logistical expert operators</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-caret-right text-brand-green mt-0.5"></i>
+                            <span>Enables formalized security for micro-logistics operators via KUR</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-caret-right text-brand-green mt-0.5"></i>
+                            <span>Significantly addresses and reduces regional economic development disparities</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Environmental Box -->
+                <div class="col-span-12 md:col-span-4 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-850 p-5 rounded-2xl shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="p-2 bg-orange-100 dark:bg-orange-950 text-brand-orange rounded-lg">
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <h4 class="font-extrabold text-sm tracking-wide text-slate-900 dark:text-white uppercase font-title">Environmental Impact</h4>
+                    </div>
+                    <ul class="text-xs text-slate-600 dark:text-slate-400 space-y-2 list-none pl-1">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-caret-right text-brand-orange mt-0.5"></i>
+                            <span>Systematic conversion to completely certified Green Ports by 2035</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-caret-right text-brand-orange mt-0.5"></i>
+                            <span>Deep greenhouse gas emissions cuts in long-haul freight operations</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-caret-right text-brand-orange mt-0.5"></i>
+                            <span>Complete alignment with national Net-Zero Carbon Emissions targets</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Interactive Impact Simulator -->
+        <div id="tab-simulator" class="space-y-8 hidden animate-fadeIn duration-500">
+            <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-850 p-6 rounded-2xl shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div class="bg-brand-blue/10 text-brand-blue p-2 rounded-lg">
+                        <i class="fa-solid fa-chart-simple text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white font-title">Strategic Target Impact Simulator</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">
+                            Configure implementation percentages for each national strategic pillar to observe simulated impacts on Indonesia's economic framework.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Splitter layout -->
+            <div class="grid grid-cols-12 gap-8">
+                <!-- Sliders Control Panel -->
+                <div class="col-span-12 lg:col-span-6 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-850 p-6 rounded-2xl shadow-sm space-y-6">
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-800 pb-3 font-title">
+                        Adjust Implementation Rates
+                    </h4>
+                    
+                    <!-- Slider 1 -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-semibold">
+                            <span class="text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-ship text-brand-blue"></i> Smart Port Infrastructure
+                            </span>
+                            <span id="val-slider-port" class="text-brand-blue font-bold">50%</span>
+                        </div>
+                        <input type="range" id="slider-port" min="0" max="100" value="50" oninput="calculateSimulator()" class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-blue">
+                        <p class="text-[10px] text-slate-400">Deploys automated PCS systems, electrification, IoT monitoring, and digital twins.</p>
+                    </div>
+
+                    <!-- Slider 2 -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-semibold">
+                            <span class="text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-truck-ramp-box text-brand-teal"></i> Multi-Modal Parks (MMLP)
+                            </span>
+                            <span id="val-slider-mmlp" class="text-brand-teal font-bold">40%</span>
+                        </div>
+                        <input type="range" id="slider-mmlp" min="0" max="100" value="40" oninput="calculateSimulator()" class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-teal">
+                        <p class="text-[10px] text-slate-400">Builds dry ports, consolidations centers, cold-chains, and links rail systems.</p>
+                    </div>
+
+                    <!-- Slider 3 -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-semibold">
+                            <span class="text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-user-gear text-brand-green"></i> Human Capital Development
+                            </span>
+                            <span id="val-slider-human" class="text-brand-green font-bold">35%</span>
+                        </div>
+                        <input type="range" id="slider-human" min="0" max="100" value="35" oninput="calculateSimulator()" class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-green">
+                        <p class="text-[10px] text-slate-400">Formalizes micro operators, runs competency modules, and offers KUR support.</p>
+                    </div>
+
+                    <!-- Slider 4 -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-semibold">
+                            <span class="text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                                <i class="fa-solid fa-circle-dollar-to-slot text-brand-orange"></i> Investment Schemes
+                            </span>
+                            <span id="val-slider-investment" class="text-brand-orange font-bold">45%</span>
+                        </div>
+                        <input type="range" id="slider-investment" min="0" max="100" value="45" oninput="calculateSimulator()" class="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-brand-orange">
+                        <p class="text-[10px] text-slate-400">Activates SWF INA partnerships, tax holiday configurations, and deep PPP structures.</p>
+                    </div>
+                </div>
+
+                <!-- Live Analytics Results Output -->
+                <div class="col-span-12 lg:col-span-6 bg-slate-900 text-white p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-sm font-bold uppercase tracking-wider text-emerald-400 border-b border-slate-800 pb-3 font-title">
+                            Live Simulated Outcomes (Projected 2035)
+                        </h4>
+
+                        <div class="grid grid-cols-2 gap-6 mt-6">
+                            <!-- Macro Indicator 1 -->
+                            <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-800">
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider block font-semibold">Projected GDP Growth Rate</span>
+                                <div class="flex items-baseline gap-1 mt-1">
+                                    <span id="result-gdp" class="text-3xl font-extrabold font-title text-white">5.82%</span>
+                                    <span class="text-xs text-emerald-400 font-semibold flex items-center gap-0.5"><i class="fa-solid fa-arrow-trend-up"></i> (Target 8.0%)</span>
+                                </div>
+                                <div class="w-full bg-slate-700 h-1.5 rounded-full mt-3 overflow-hidden">
+                                    <div id="bar-gdp" class="bg-emerald-400 h-full rounded-full transition-all duration-300" style="width: 72.75%;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Macro Indicator 2 -->
+                            <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-800">
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider block font-semibold">Logistics Cost / GDP</span>
+                                <div class="flex items-baseline gap-1 mt-1">
+                                    <span id="result-cost" class="text-3xl font-extrabold font-title text-white">12.1%</span>
+                                    <span class="text-xs text-cyan-400 font-semibold flex items-center gap-0.5"><i class="fa-solid fa-arrow-trend-down"></i> (Target 8.0%)</span>
+                                </div>
+                                <div class="w-full bg-slate-700 h-1.5 rounded-full mt-3 overflow-hidden">
+                                    <div id="bar-cost" class="bg-cyan-400 h-full rounded-full transition-all duration-300" style="width: 66%;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Macro Indicator 3 -->
+                            <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-800">
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider block font-semibold">Average Dwelling Time</span>
+                                <div class="flex items-baseline gap-1 mt-1">
+                                    <span id="result-dwelling" class="text-3xl font-extrabold font-title text-white">2.4 Days</span>
+                                    <span class="text-xs text-blue-400 font-semibold"><i class="fa-solid fa-clock"></i> (Target ≤ 1.5)</span>
+                                </div>
+                            </div>
+
+                            <!-- Macro Indicator 4 -->
+                            <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-800">
+                                <span class="text-[10px] text-slate-400 uppercase tracking-wider block font-semibold">Global LPI Ranking</span>
+                                <div class="flex items-baseline gap-1 mt-1">
+                                    <span id="result-lpi" class="text-3xl font-extrabold font-title text-white">Top 51</span>
+                                    <span class="text-xs text-brand-green font-semibold"><i class="fa-solid fa-globe"></i> (Target Top 40)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 border-t border-slate-800 pt-4 bg-slate-950/40 p-4 rounded-xl border border-slate-850">
+                        <h5 class="text-xs font-bold uppercase text-emerald-400 flex items-center gap-1.5 mb-1.5">
+                            <i class="fa-solid fa-bullhorn"></i> Strategic Modeling Feedback:
+                        </h5>
+                        <p id="simulator-feedback" class="text-[11px] text-slate-400 leading-relaxed">
+                            Pillar programs are partially implemented. To reduce sovereign logistics overhead to the target 8.0% and trigger the macro economic growth target, align digital twin deployments and expand multi-modal corridors.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Detailed Policy Document Section -->
+        <div id="tab-docs" class="space-y-8 hidden animate-fadeIn duration-500">
+            <div class="bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-850 p-6 rounded-2xl shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div class="bg-emerald-500/10 text-brand-green p-2.5 rounded-lg">
+                        <i class="fa-solid fa-book-open text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white font-title">Policy Framework & Interactive Checklists</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">
+                            Explore, filter, and check off real policy targets required to achieve complete alignment with the World Bank & McKinsey 2035 parameters.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-8">
+                <!-- Checklist 1 -->
+                <div class="col-span-12 md:col-span-6 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-850 p-6 rounded-2xl shadow-sm space-y-4">
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-brand-blue border-b border-slate-100 dark:border-slate-800 pb-2 flex justify-between items-center font-title">
+                        <span>Track A: Digital & Operational</span>
+                        <span class="text-[10px] bg-blue-50 text-brand-blue px-2 py-0.5 rounded font-mono">Operations</span>
+                    </h4>
+                    
+                    <div class="space-y-3">
+                        <label class="flex items-start gap-3 p-2 hover:bg-slate-50 dark:hover:bg-slate-900/40 rounded transition cursor-pointer">
+                            <input type="checkbox" checked class="mt-1 h-4 w-4 rounded border-slate-350 text-brand-blue focus:ring-brand-blue">
+                            <div>
+                                <span class="text-xs font-bold text-slate-800 dark:text-white block">Standardize Port Community System (PCS)</span>
+                                <p class="text-[10px] text-slate-400">Implement dynamic unified EDI data feeds for maritime systems.</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 p-2 hover:bg-slate-50 dark:hover:bg-slate-900/40 rounded transition cursor-pointer">
+                            <input type="checkbox" class="mt-1 h-4 w-4 rounded border-slate-350 text-brand-blue focus:ring-brand-blue">
+                            <div>
+                                <span class="text-xs font-bold text-slate-800 dark:text-white block">Implement Live Real-Time Digital Twin</span>
+                                <p class="text-[10px] text-slate-400">Integrate 3D visual feeds for terminal berths and container yards.</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 p-2 hover:bg-slate-50 dark:hover:bg-slate-900/40 rounded transition cursor-pointer">
+                            <input type="checkbox" checked class="mt-1 h-4 w-4 rounded border-slate-350 text-brand-blue focus:ring-brand-blue">
+                            <div>
+                                <span class="text-xs font-bold text-slate-800 dark:text-white block">Inland Dry Port Rail Connectivity</span>
+                                <p class="text-[10px] text-slate-400">Link heavy freight rail lines directly to deepwater ports.</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 p-2 hover:bg-slate-50 dark:hover:bg-slate-900/40 rounded transition cursor-pointer">
+                            <input type="checkbox" class="mt-1 h-4 w-4 rounded border-slate-350 text-brand-blue focus:ring-brand-blue">
+                            <div>
+                                <span class="text-xs font-bold text-slate-800 dark:text-white block">Construct 10+ Multi-Modal Parks</span>
+                                <p class="text-[10px] text-slate-400">Set up regional consolidation hubs with integrated cold chains.</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Checklist 2 -->
+                <div class="col-span-12 md:col-span-6 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-850 p-6 rounded-2xl shadow-sm space-y-4">
+                    <h4 class="text-sm font-bold uppercase tracking-wider text-brand-orange border-b border-slate-100 dark:border-slate-800 pb-2 flex justify-between items-center font-title">
+                        <span>Track B: Enabling Ecosystem</span>
+                        <span class="text-[10px] bg-orange-50 text-brand-orange px-2 py-0.5 rounded font-mono">Enabler</span>
+                    </h4>
+
+                    <div class="space-y-3">
+                        <label class="flex items-start gap-3 p-2 hover:bg-slate-50 dark:hover:bg-slate-900/40 rounded transition cursor-pointer">
+                            <input type="checkbox" checked class="mt-1 h-4 w-4 rounded border-slate-350 text-brand-orange focus:ring-brand-orange">
+                            <div>
+                                <span class="text-xs font-bold text-slate-800 dark:text-white block">National Logistics Competency Certification</span>
+                                <p class="text-[10px] text-slate-400">Establish standard competency pathways targeting 300k workers.</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 p-2 hover:bg-slate-50 dark:hover:bg-slate-900/40 rounded transition cursor-pointer">
+                            <input type="checkbox" class="mt-1 h-4 w-4 rounded border-slate-350 text-brand-orange focus:ring-brand-orange">
+                            <div>
+                                <span class="text-xs font-bold text-slate-800 dark:text-white block">Formalization of Micro-Operators</span>
+                                <p class="text-[10px] text-slate-400">Create specialized micro-credit KUR lines for local truckers.</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 p-2 hover:bg-slate-50 dark:hover:bg-slate-900/40 rounded transition cursor-pointer">
+                            <input type="checkbox" checked class="mt-1 h-4 w-4 rounded border-slate-350 text-brand-orange focus:ring-brand-orange">
+                            <div>
+                                <span class="text-xs font-bold text-slate-800 dark:text-white block">Activate SWF Sovereign Asset Matching</span>
+                                <p class="text-[10px] text-slate-400">Establish capital pipelines via the Indonesia Investment Authority (INA).</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start gap-3 p-2 hover:bg-slate-50 dark:hover:bg-slate-900/40 rounded transition cursor-pointer">
+                            <input type="checkbox" class="mt-1 h-4 w-4 rounded border-slate-350 text-brand-orange focus:ring-brand-orange">
+                            <div>
+                                <span class="text-xs font-bold text-slate-800 dark:text-white block">Deploy Viability Gap Funding (VGF)</span>
+                                <p class="text-[10px] text-slate-400">Offer financial guarantees to ensure project bankability.</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Badges Formula Footer Section -->
+        <footer class="border-t border-slate-200 dark:border-slate-800 pt-6 mt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex flex-wrap items-center gap-2 justify-center md:justify-start">
+                <!-- Badge 1 -->
+                <div class="flex items-center gap-1.5 bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900 px-3 py-1 rounded text-[11px] font-bold text-brand-blue uppercase tracking-wider font-mono">
+                    <i class="fa-solid fa-ship"></i> Smart Port
+                </div>
+                <span class="text-slate-400 dark:text-slate-600 font-bold">+</span>
+                <!-- Badge 2 -->
+                <div class="flex items-center gap-1.5 bg-teal-50 dark:bg-teal-950/30 border border-teal-200 dark:border-teal-900 px-3 py-1 rounded text-[11px] font-bold text-brand-teal uppercase tracking-wider font-mono">
+                    <i class="fa-solid fa-truck-ramp-box"></i> MMLP Integration
+                </div>
+                <span class="text-slate-400 dark:text-slate-600 font-bold">+</span>
+                <!-- Badge 3 -->
+                <div class="flex items-center gap-1.5 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 px-3 py-1 rounded text-[11px] font-bold text-brand-green uppercase tracking-wider font-mono">
+                    <i class="fa-solid fa-user-gear"></i> Human Capital
+                </div>
+                <span class="text-slate-400 dark:text-slate-600 font-bold">+</span>
+                <!-- Badge 4 -->
+                <div class="flex items-center gap-1.5 bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-900 px-3 py-1 rounded text-[11px] font-bold text-brand-orange uppercase tracking-wider font-mono">
+                    <i class="fa-solid fa-circle-dollar-to-slot"></i> Investment
+                </div>
+                <span class="text-slate-400 dark:text-slate-600 font-bold">=</span>
+                <!-- Goal Badge -->
+                <div class="flex items-center gap-2 bg-slate-900 dark:bg-brand-blue text-white px-4 py-1.5 rounded-lg text-xs font-black uppercase font-title tracking-wider shadow-sm">
+                    <i class="fa-solid fa-star text-emerald-400 animate-pulse"></i> SMARTLOGIX 2035
+                </div>
+            </div>
+            
+            <div class="text-right">
+                <p class="text-[9px] text-slate-400 dark:text-slate-500 uppercase tracking-widest font-bold font-title">Republic of Indonesia</p>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400 font-bold mt-0.5">National Strategy Coordination Council</p>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Interactive Drawer Modal for Strategic Exploration -->
+    <div id="info-drawer" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden transition-all duration-300">
+        <div class="bg-white dark:bg-slate-950 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 max-w-xl w-full overflow-hidden transform scale-95 transition-all duration-300 flex flex-col">
+            <!-- Header Accent indicator line -->
+            <div id="drawer-accent" class="h-2 bg-brand-blue"></div>
+            
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex items-center gap-3">
+                        <div id="drawer-icon-container" class="p-2.5 bg-slate-100 dark:bg-slate-900 rounded-xl text-slate-800 dark:text-white">
+                            <!-- Injected dynamically -->
+                        </div>
+                        <div>
+                            <span id="drawer-pre-title" class="text-[9px] font-bold tracking-widest uppercase text-slate-400 block font-mono">Information</span>
+                            <h3 id="drawer-title" class="text-lg font-bold text-slate-900 dark:text-white font-title leading-tight">Detail View</h3>
+                        </div>
+                    </div>
+                    <button onclick="closeDrawer()" class="p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-900 text-slate-400 hover:text-slate-600 transition">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Strategic Body Content Area -->
+                <div id="drawer-content" class="text-sm text-slate-600 dark:text-slate-400 space-y-4 max-h-[400px] overflow-y-auto pr-2">
+                    <!-- Injected dynamically -->
+                </div>
+            </div>
+
+            <!-- Footer Action Bar -->
+            <div class="bg-slate-50 dark:bg-slate-900/40 px-6 py-4 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+                <button onclick="closeDrawer()" class="px-4 py-2 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg transition border border-slate-200 dark:border-slate-800">
+                    Close Strategic Details
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Toast Overlay -->
+    <div id="action-toast" class="fixed bottom-6 right-6 bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-xl z-50 transition-all duration-350 translate-y-12 opacity-0 flex items-center gap-2 border border-slate-800">
+        <i class="fa-solid fa-check text-emerald-400 text-sm"></i>
+        <span id="toast-text">System Active</span>
+    </div>
+
+    <!-- Strategic Blueprint JS Interaction Code -->
+    <script>
+        // Core Policy Framework Detail Datastore
+        const strategicData = {
+            'smart-port': {
+                accent: '#2563eb',
+                pre: 'Strategic Pillar I (Track A: Digital & Operational)',
+                title: 'Smart Port Ecosystem',
+                icon: `<i class="fa-solid fa-ship text-xl"></i>`,
+                desc: `
+                    <p class="font-semibold text-slate-800 dark:text-slate-200">Revolutionizing deepwater marine gates with modern automated technologies and digital tracking solutions.</p>
+                    <div class="space-y-3 mt-4 text-xs">
+                        <strong class="text-[10px] text-brand-blue uppercase tracking-wider block font-title">Execution Sub-Components:</strong>
+                        <ul class="list-disc pl-5 space-y-1.5">
+                            <li><strong>Port Community System (PCS):</strong> A unified interface exchanging direct API datashares across customs, immigration, port services and shipping agencies.</li>
+                            <li><strong>3D Digital Twin Modeling:</strong> Live spatial tracking of every crane, berth slot, yard container stack and land feeder route to prevent logistics queuing.</li>
+                            <li><strong>IoT Cargo Tracking & E-Waybills:</strong> Continuous cargo status tracing using heavy RFID, active cellular GPS, and cryptographic digital transport bills.</li>
+                            <li><strong>Electrification & Green Port:</strong> Fully electrifies port cranes, automated guided vehicles (AGVs), and targets a 50% emissions reduction via clean solar arrays.</li>
+                        </ul>
+                    </div>
+                `
+            },
+            'mmlp': {
+                accent: '#0d9488',
+                pre: 'Strategic Pillar II (Track A: Digital & Operational)',
+                title: 'Multi-Modal Logistics Parks (MMLP)',
+                icon: `<i class="fa-solid fa-truck-ramp-box text-xl"></i>`,
+                desc: `
+                    <p class="font-semibold text-slate-800 dark:text-slate-200">Interconnecting transport modalities inside single-envelope, multi-tenant logistics centers.</p>
+                    <div class="space-y-3 mt-4 text-xs">
+                        <strong class="text-[10px] text-brand-teal uppercase tracking-wider block font-title">Execution Sub-Components:</strong>
+                        <ul class="list-disc pl-5 space-y-1.5">
+                            <li><strong>Inland Dry Port Integration:</strong> Permits deepwater customs clearances at inland rail centers, avoiding port bottlenecks.</li>
+                            <li><strong>Cold Chain Infrastructure:</strong> Temperature-controlled distribution networks ensuring zero-waste fisheries and agriculture cargo.</li>
+                            <li><strong>Industrial Park Cross-Docking:</strong> Fast transfers from local manufacturing plants directly to global delivery loops, cutting intermediate logistics processes.</li>
+                            <li><strong>Strategic Hub Spacing:</strong> 10+ key physical MMLP centers strategically positioned along main logistics corridors.</li>
+                        </ul>
+                    </div>
+                `
+            },
+            'human-capital': {
+                accent: '#22c55e',
+                pre: 'Strategic Pillar III (Track B: Enabling Ecosystem)',
+                title: 'Logistics Human Capital Program',
+                icon: `<i class="fa-solid fa-user-gear text-xl"></i>`,
+                desc: `
+                    <p class="font-semibold text-slate-800 dark:text-slate-200">Upskilling professional ranks and transitioning informal operators into standardized formal positions.</p>
+                    <div class="space-y-3 mt-4 text-xs">
+                        <strong class="text-[10px] text-brand-green uppercase tracking-wider block font-title">Execution Sub-Components:</strong>
+                        <ul class="list-disc pl-5 space-y-1.5">
+                            <li><strong>National Competency Standard:</strong> Establishes standardized academic certification programs targeting 300,000 professional credentials.</li>
+                            <li><strong>Digital Skills & AI Logistics:</strong> Training for predictive inventory modeling, warehouse automation, and route optimization.</li>
+                            <li><strong>Formalization of Micro-Operators:</strong> Direct access to specialized micro-credit (KUR) financing, enabling small truckers to formalize their operations and upgrade their equipment.</li>
+                        </ul>
+                    </div>
+                `
+            },
+            'investment': {
+                accent: '#f97316',
+                pre: 'Strategic Pillar IV (Track B: Enabling Ecosystem)',
+                title: 'Integrated Investment Scheme',
+                icon: `<i class="fa-solid fa-circle-dollar-to-slot text-xl"></i>`,
+                desc: `
+                    <p class="font-semibold text-slate-800 dark:text-slate-200">Leveraging alternative financing structures to construct key hard assets without straining state budget reserves.</p>
+                    <div class="space-y-3 mt-4 text-xs">
+                        <strong class="text-[10px] text-brand-orange uppercase tracking-wider block font-title">Execution Sub-Components:</strong>
+                        <ul class="list-disc pl-5 space-y-1.5">
+                            <li><strong>Sovereign Wealth Fund (INA):</strong> Deep institutional asset matching targeting global pension and private equity funds.</li>
+                            <li><strong>Viability Gap Funding (VGF):</strong> Targeted government support to make complex public projects financially viable for private operators.</li>
+                            <li><strong>One Stop Gateway:</strong> Streamlined permits and clear single-window clearances for all large logistical network providers.</li>
+                            <li><strong>Tax Holidays & Allowances:</strong> Strategic fiscal incentives designed to attract logistics software and heavy cargo asset developers.</li>
+                        </ul>
+                    </div>
+                `
+            },
+            'phase-1': {
+                accent: '#2563eb',
+                pre: 'Chronological Horizon I',
+                title: 'Phase 1: Foundation (2026–2028)',
+                icon: `<i class="fa-solid fa-calendar text-xl"></i>`,
+                desc: `
+                    <p class="font-semibold text-slate-800 dark:text-slate-200">Securing critical policy reforms and launching initial regional pilot projects.</p>
+                    <div class="space-y-3 mt-4 text-xs">
+                        <strong class="text-[10px] text-brand-blue uppercase tracking-wider block">Priority Initiatives:</strong>
+                        <ul class="list-disc pl-5 space-y-1.5">
+                            <li>Align customs and maritime port regulatory frameworks.</li>
+                            <li>Launch the National Logistics Ecosystem (NLE) program at 10 primary ports.</li>
+                            <li>Complete the initial feasibility analysis for the first dry port MMLPs in Java and Sumatra.</li>
+                        </ul>
+                    </div>
+                `
+            },
+            'phase-2': {
+                accent: '#0d9488',
+                pre: 'Chronological Horizon II',
+                title: 'Phase 2: Integration (2029–2032)',
+                icon: `<i class="fa-solid fa-calendar-days text-xl"></i>`,
+                desc: `
+                    <p class="font-semibold text-slate-800 dark:text-slate-200">Scaling physical infrastructure networks and digital integrations across primary corridors.</p>
+                    <div class="space-y-3 mt-4 text-xs">
+                        <strong class="text-[10px] text-brand-teal uppercase tracking-wider block font-title font-title">Priority Initiatives:</strong>
+                        <ul class="list-disc pl-5 space-y-1.5">
+                            <li>Full nationwide integration of PCS with custom networks.</li>
+                            <li>Link primary rail networks directly into major deepwater container ports.</li>
+                            <li>Standardizing national freight forwarding training programs with academic credentials.</li>
+                        </ul>
+                    </div>
+                `
+            },
+            'phase-3': {
+                accent: '#f97316',
+                pre: 'Chronological Horizon III',
+                title: 'Phase 3: Optimization (2033–2035)',
+                icon: `<i class="fa-solid fa-calendar-check text-xl"></i>`,
+                desc: `
+                    <p class="font-semibold text-slate-800 dark:text-slate-200">Reaching fully optimized operations, carbon targets, and serving as the primary logistics gateway for ASEAN.</p>
+                    <div class="space-y-3 mt-4 text-xs">
+                        <strong class="text-[10px] text-brand-orange uppercase tracking-wider block">Priority Initiatives:</strong>
+                        <ul class="list-disc pl-5 space-y-1.5">
+                            <li>AI-driven real-time global cargo routing models.</li>
+                            <li>Widespread decarbonization goals met at all Class-1 ports.</li>
+                            <li>Lowering sovereign transport spend overhead down to a globally competitive 8% of total GDP.</li>
+                        </ul>
+                    </div>
+                `
+            }
+        };
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-900', 'dark:text-white', 'shadow-sm');
+                btn.classList.add('text-slate-500', 'hover:text-slate-900', 'dark:hover:text-white');
+            });
+            
+            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+            activeBtn.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-900', 'dark:text-white', 'shadow-sm');
+            activeBtn.classList.remove('text-slate-500', 'hover:text-slate-900', 'dark:hover:text-white');
+
+            document.getElementById('tab-blueprint').classList.add('hidden');
+            document.getElementById('tab-simulator').classList.add('hidden');
+            document.getElementById('tab-docs').classList.add('hidden');
+            
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            showToast(`Switched to ${tabId.charAt(0).toUpperCase() + tabId.slice(1)} view`);
+        }
+
+        // Open Detail Modal
+        function openPillarDetail(key) {
+            const data = strategicData[key];
+            if (!data) return;
+
+            document.getElementById('drawer-accent').style.backgroundColor = data.accent;
+            document.getElementById('drawer-pre-title').textContent = data.pre;
+            document.getElementById('drawer-pre-title').style.color = data.accent;
+            document.getElementById('drawer-title').textContent = data.title;
+            document.getElementById('drawer-icon-container').innerHTML = data.icon;
+            document.getElementById('drawer-icon-container').style.backgroundColor = `${data.accent}15`;
+            document.getElementById('drawer-content').innerHTML = data.desc;
+
+            const modal = document.getElementById('info-drawer');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.firstElementChild.classList.remove('scale-95');
+                modal.firstElementChild.classList.add('scale-100');
+            }, 50);
+        }
+
+        function openPhaseDetail(key) {
+            openPillarDetail(key);
+        }
+
+        function closeDrawer() {
+            const modal = document.getElementById('info-drawer');
+            modal.firstElementChild.classList.remove('scale-100');
+            modal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 150);
+        }
+
+        // Highlight Toggle Mode
+        let highlightMode = false;
+        function toggleHighlightMode() {
+            highlightMode = !highlightMode;
+            const indicators = document.querySelectorAll('.kpi-target');
+            const toggleBtn = document.getElementById('highlight-toggle-btn');
+
+            indicators.forEach(el => {
+                if (highlightMode) {
+                    el.classList.add('pulse-highlight', 'bg-yellow-100', 'dark:bg-yellow-950/40', 'border-yellow-400', 'text-slate-900', 'dark:text-yellow-200', 'scale-105');
+                } else {
+                    el.classList.remove('pulse-highlight', 'bg-yellow-100', 'dark:bg-yellow-950/40', 'border-yellow-400', 'text-slate-900', 'dark:text-yellow-200', 'scale-105');
+                }
+            });
+
+            if (highlightMode) {
+                toggleBtn.classList.add('bg-brand-orange/20', 'text-slate-900', 'dark:text-white');
+                showToast('Highlighted critical World Bank targets');
+            } else {
+                toggleBtn.classList.remove('bg-brand-orange/20', 'text-slate-900', 'dark:text-white');
+                showToast('Restored standard blueprint view');
+            }
+        }
+
+        // Dark Mode Logic
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            showToast('Toggled display theme');
+        }
+
+        // Strategic Policy Mathematical Simulation Engine
+        function calculateSimulator() {
+            const portVal = parseInt(document.getElementById('slider-port').value);
+            const mmlpVal = parseInt(document.getElementById('slider-mmlp').value);
+            const humanVal = parseInt(document.getElementById('slider-human').value);
+            const investmentVal = parseInt(document.getElementById('slider-investment').value);
+
+            // Update Label Text
+            document.getElementById('val-slider-port').textContent = `${portVal}%`;
+            document.getElementById('val-slider-mmlp').textContent = `${mmlpVal}%`;
+            document.getElementById('val-slider-human').textContent = `${humanVal}%`;
+            document.getElementById('val-slider-investment').textContent = `${investmentVal}%`;
+
+            // Calculate Metrics
+            const averageProgress = (portVal + mmlpVal + humanVal + investmentVal) / 4;
+
+            // GDP Target starts from baseline ~5.1% up to 8.0% max limit
+            const gdpCalculated = 5.1 + (averageProgress / 100) * 2.9;
+            document.getElementById('result-gdp').textContent = `${gdpCalculated.toFixed(2)}%`;
+            const gdpBarPercentage = ((gdpCalculated - 4.5) / (8.0 - 4.5)) * 100;
+            document.getElementById('bar-gdp').style.width = `${Math.min(100, Math.max(5, gdpBarPercentage))}%`;
+
+            // Logistics Cost / GDP starts from baseline ~14.2% down to 8.0% target
+            const costCalculated = 14.2 - (averageProgress / 100) * 6.2;
+            document.getElementById('result-cost').textContent = `${costCalculated.toFixed(1)}%`;
+            const costBarPercentage = ((16.0 - costCalculated) / (16.0 - 8.0)) * 100;
+            document.getElementById('bar-cost').style.width = `${Math.min(100, Math.max(5, costBarPercentage))}%`;
+
+            // Dwelling time starts from baseline ~3.2 Days down to 1.5 Days
+            const dwellingCalculated = 3.2 - (portVal / 100) * 1.7;
+            document.getElementById('result-dwelling').textContent = `${dwellingCalculated.toFixed(1)} Days`;
+
+            // LPI Rank starts from baseline ~63 down to Top 40
+            const lpiRank = Math.round(63 - (averageProgress / 100) * 23);
+            document.getElementById('result-lpi').textContent = `Top ${lpiRank}`;
+
+            // Dynamic Feedback Messages
+            const feedbackText = document.getElementById('simulator-feedback');
+            if (averageProgress < 30) {
+                feedbackText.textContent = "Minimal implementation rates. High logistics costs will limit national competitiveness and constrain the GDP growth rate to current historical levels.";
+            } else if (averageProgress < 60) {
+                feedbackText.textContent = "Progress is underway. To achieve the 8% GDP target, accelerate the rollout of Multi-Modal Logistics Parks (MMLPs) to eliminate double cargo handling.";
+            } else if (averageProgress < 90) {
+                feedbackText.textContent = "High implementation levels! Core logistics costs are rapidly approaching the 10% milestone. Enhance funding mechanisms to sustain this momentum.";
+            } else {
+                feedbackText.textContent = "Excellent strategic configuration! Complete system integration targets achieved. This configuration successfully meets Indonesia's 8.0% economic target and achieves a Top 40 LPI global ranking.";
+            }
+        }
+
+        // Custom Toast Helper
+        function showToast(message) {
+            const toast = document.getElementById('action-toast');
+            document.getElementById('toast-text').textContent = message;
+            toast.classList.remove('opacity-0', 'translate-y-12');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'translate-y-12');
+            }, 3000);
+        }
+
+        // Escape Key Modal Dismiss
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeDrawer();
+        });
+
+        // Initialize Simulator Calculations on Window Load
+        window.onload = function() {
+            calculateSimulator();
+        };
+    </script>
+</body>
+</html>
